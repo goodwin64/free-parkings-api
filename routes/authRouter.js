@@ -1,18 +1,40 @@
 const express = require('express');
 const router = express.Router();
+const uuidV4 = require('uuid/v4');
 
 
-const validCred = {
-  email: 'groupmanager@a.b',
-  password: '123',
-};
+const users = [
+  {
+    credentials: {
+      username: 'admin',
+      password: 'admin',
+    },
+    authInfo: {
+      role: 'admin', accessToken: uuidV4()
+    },
+  },
+  {
+    credentials: {
+      username: 'driver',
+      password: 'driver',
+    },
+    authInfo: {
+      role: 'driver', accessToken: uuidV4()
+    },
+  },
+];
+
+function findUserByCredentials(username, password) {
+  return users.find((user) => user.credentials.username === username && user.credentials.password === password);
+}
 
 router.post('/', function(req, res) {
-  if (req.body.email === validCred.email && req.body.password === validCred.password) {
-    res.send('ok');
+  const userByCredentials = findUserByCredentials(req.body.username, req.body.password);
+  if (userByCredentials) {
+    res.json(userByCredentials.authInfo);
   } else {
     res.status(403);
-    res.send('not ok');
+    res.json('wrong username or password');
   }
 });
 
