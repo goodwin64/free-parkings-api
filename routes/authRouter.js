@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const uuidV4 = require('uuid/v4');
 
+const ROLE_ADMIN = 'ADMIN';
+const ROLE_DRIVER = 'DRIVER';
+
 
 const users = [
   {
@@ -10,7 +13,7 @@ const users = [
       password: 'admin',
     },
     authInfo: {
-      role: 'admin', accessToken: uuidV4()
+      role: ROLE_ADMIN, accessToken: uuidV4()
     },
   },
   {
@@ -19,7 +22,7 @@ const users = [
       password: 'driver',
     },
     authInfo: {
-      role: 'driver', accessToken: uuidV4()
+      role: ROLE_DRIVER, accessToken: uuidV4()
     },
   },
 ];
