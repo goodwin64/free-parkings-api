@@ -15,6 +15,11 @@ const users = [
     authInfo: {
       role: ROLE_ADMIN, accessToken: uuidV4()
     },
+    personalInfo: {
+      username: 'admin',
+      avatarUrl: 'https://media.licdn.com/dms/image/C4E03AQEeds_cS96caQ/profile-displayphoto-shrink_200_200/0?e=1560384000&v=beta&t=AR3x3rpGS8Bd78VcN4ESM8cayyfrrXp8eG0ejjgQAUE',
+      gender: 'male',
+    },
   },
   {
     credentials: {
@@ -23,6 +28,11 @@ const users = [
     },
     authInfo: {
       role: ROLE_DRIVER, accessToken: uuidV4()
+    },
+    personalInfo: {
+      username: 'driver',
+      avatarUrl: 'https://ae01.alicdn.com/kf/HTB1wyP2KFXXXXbvXFXXq6xXFXXXX/Parzin-Oversized-Sunglasses-Women-Female-Polarized-Sunglasses-Black-Elegant-Shades-Driver-Driving-Glasses-With-Case-9515.jpg_50x50.jpg',
+      gender: 'female',
     },
   },
 ];
@@ -34,7 +44,10 @@ function findUserByCredentials(username, password) {
 router.post('/', function(req, res) {
   const userByCredentials = findUserByCredentials(req.body.username, req.body.password);
   if (userByCredentials) {
-    res.json(userByCredentials.authInfo);
+    res.json({
+      authInfo: userByCredentials.authInfo,
+      personalInfo: userByCredentials.personalInfo,
+    });
   } else {
     res.status(403);
     res.json('wrong username or password');
