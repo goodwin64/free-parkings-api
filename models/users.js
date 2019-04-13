@@ -1,5 +1,3 @@
-const uuidV4 = require('uuid/v4');
-
 const ROLE_ADMIN = 'ADMIN';
 const ROLE_DRIVER = 'DRIVER';
 
@@ -11,7 +9,7 @@ const users = [
     },
     authInfo: {
       role: ROLE_ADMIN,
-      accessToken: uuidV4(),
+      accessToken: null,
     },
     personalInfo: {
       username: 'admin',
@@ -26,7 +24,7 @@ const users = [
     },
     authInfo: {
       role: ROLE_DRIVER,
-      accessToken: uuidV4(),
+      accessToken: null,
     },
     personalInfo: {
       username: 'driver',

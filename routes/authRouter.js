@@ -13,6 +13,7 @@ function findUserByCredentials(username, password) {
 router.post('/login', function (req, res) {
   const userByCredentials = findUserByCredentials(req.body.username, req.body.password);
   if (userByCredentials) {
+    userByCredentials.authInfo.accessToken = createAccessToken();
     res.status(200);
     res.json({
       authInfo: userByCredentials.authInfo,
@@ -38,6 +39,10 @@ router.post('/logout', function (req, res) {
 });
 
 
+function createAccessToken() {
+  return uuidV4();
+}
+
 function isUserExist(username) {
   return Boolean(users.find((user) => user.personalInfo.username === username));
 }
@@ -54,7 +59,7 @@ function createUser({ username = '', password = '', avatarUrl = '', gender = '' 
     },
     authInfo: {
       role: ROLE_DRIVER,
-      accessToken: uuidV4(),
+      accessToken: createAccessToken(),
     },
     personalInfo: {
       username,
