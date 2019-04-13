@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
 
 const indexRouter = require('./routes');
 const parkingsRouter = require('./routes/parkings');
@@ -11,6 +12,7 @@ const areaRouter = require('./routes/areaRouter');
 const authRouter = require('./routes/authRouter');
 // const basicAuth = require('./helpers/basic-auth');
 const errorHandler = require('./helpers/error-handler');
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
 
@@ -24,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // use basic HTTP auth to secure the api
 // app.use(basicAuth);

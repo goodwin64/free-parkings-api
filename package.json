@@ -23,6 +23,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pug": "2.0.0-beta11",
+    "swagger-ui-express": "^4.0.2",
     "uuid": "^3.3.2"
   },
   "devDependencies": {},

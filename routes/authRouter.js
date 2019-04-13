@@ -13,6 +13,7 @@ function findUserByCredentials(username, password) {
 router.post('/login', function (req, res) {
   const userByCredentials = findUserByCredentials(req.body.username, req.body.password);
   if (userByCredentials) {
+    res.status(200);
     res.json({
       authInfo: userByCredentials.authInfo,
       personalInfo: userByCredentials.personalInfo,
@@ -28,7 +29,7 @@ router.post('/logout', function (req, res) {
   const user = users.find((user) => user.authInfo.accessToken === req.body.accessToken);
   if (user) {
     user.authInfo.accessToken = null;
-
+    res.status(200);
     res.json('logout successful');
   } else {
     res.status(403);
@@ -74,6 +75,7 @@ router.post('/signup', function (req, res) {
       users.push();
       res.json('sign up successful');
     } else {
+      res.status(403);
       res.json('invalid parameters');
     }
   }

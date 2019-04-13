@@ -1,0 +1,151 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Free parkings API"
+  },
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "host": "free-parkings-api.herokuapp.com",
+  "basePath": "/",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "User log in",
+        "description": "Get user credentials. If correct - send user info including 'accessToken' in response.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "formData",
+            "description": "Username as a unique identifier",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Password for account",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authInfo": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string"
+                    },
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "personalInfo": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "avatarUrl": {
+                      "type": "string"
+                    },
+                    "gender": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Login unsuccessful",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "User log out",
+        "description": "Get user access token. If correct - clear its' token.",
+        "parameters": [
+          {
+            "name": "accessToken",
+            "in": "formData",
+            "description": "Access token given by server when user logged in.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout successful",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "Correct access token": "logout successful"
+            }
+          },
+          "403": {
+            "description": "Logout unsuccessful",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "Invalid access token": "cannot logout"
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "summary": "User sign up (register)",
+        "description": "Get user credentials. If correct - store in DB and nofify.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "formData",
+            "description": "Username as a unique identifier",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Password for account",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sign up successful",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "Unique username and valid password": "sign up successful"
+            }
+          },
+          "403": {
+            "description": "Sign up unsuccessful",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "NOT unique username": "username XXX already exists",
+              "Some of parameters are invalid": "invalid parameters"
+            }
+          }
+        }
+      }
+    }
+  }
+}
