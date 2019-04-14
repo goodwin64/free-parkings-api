@@ -1,24 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const uuidV4 = require('uuid/v4');
 
-const users = require('../models/users').users;
-const ROLE_DRIVER = require('../models/users').ROLE_DRIVER;
+const UsersService = require('../helpers/UsersService');
 
-
-function findUserByCredentials(username, password) {
-  return users.find((user) => user.credentials.username === username && user.credentials.password === password);
-}
 
 router.post('/login', function (req, res) {
-  const userByCredentials = findUserByCredentials(req.body.username, req.body.password);
-  if (userByCredentials) {
-    userByCredentials.authInfo.accessToken = createAccessToken();
+  const user = UsersService.getUserByCredentials(req.body.username, req.body.password);
+  if (user) {
+    user.authInfo.accessToken = UsersService.createAccessToken();
     res.status(200);
-    res.json({
-      authInfo: userByCredentials.authInfo,
-      personalInfo: userByCredentials.personalInfo,
-    });
+    res.json(UsersService.getUserPublicInfo(user));
   } else {
     res.status(403);
     res.json('wrong username or password');
@@ -27,9 +18,9 @@ router.post('/login', function (req, res) {
 
 
 router.post('/logout', function (req, res) {
-  const user = users.find((user) => user.authInfo.accessToken === req.body.accessToken);
-  if (user) {
-    user.authInfo.accessToken = null;
+  const user = UsersService.getUserByAccessToken(req.body.accessToken);
+  if (UsersService.isValidUser(user)) {
+    UsersService.clearAccessToken(user);
     res.status(200);
     res.json('logout successful');
   } else {
@@ -39,50 +30,21 @@ router.post('/logout', function (req, res) {
 });
 
 
-function createAccessToken() {
-  return uuidV4();
-}
-
-function isUserExist(username) {
-  return Boolean(users.find((user) => user.personalInfo.username === username));
-}
-
-function createUser({ username = '', password = '', avatarUrl = '', gender = '' }) {
-  if (!username || !password) {
-    return null;
-  }
-
-  return {
-    credentials: {
-      username,
-      password,
-    },
-    authInfo: {
-      role: ROLE_DRIVER,
-      accessToken: createAccessToken(),
-    },
-    personalInfo: {
-      username,
-      avatarUrl,
-      gender,
-    },
-  };
-}
-
 router.post('/signup', function (req, res) {
   const username = req.body.username;
-  if (isUserExist(username)) {
+  if (UsersService.isUserExist(username)) {
     res.status(403);
-    res.json(`username ${username} already exists`);
+    res.json(`username "${username}" already exists`);
+    return;
+  }
+
+  const userCreated = UsersService.createUser(req.body);
+  if (userCreated) {
+    UsersService.addUser(userCreated);
+    res.json('sign up successful');
   } else {
-    const userCreated = createUser(req.body);
-    if (userCreated) {
-      users.push();
-      res.json('sign up successful');
-    } else {
-      res.status(403);
-      res.json('invalid parameters');
-    }
+    res.status(403);
+    res.json('invalid parameters');
   }
 });
 
