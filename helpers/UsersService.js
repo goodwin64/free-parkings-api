@@ -1,5 +1,6 @@
 const uuidV4 = require('uuid/v4');
 const fs = require('fs');
+const path = require('path');
 
 const { ROLE_ADMIN, ROLE_DRIVER } = require('../types/user');
 const defaultUsers = require('../models/users.json');
@@ -22,7 +23,7 @@ class UsersService {
       },
       authInfo: {
         role: ROLE_DRIVER,
-        accessToken: this.createAccessToken(),
+        accessToken: null,
       },
       personalInfo: {
         username,
@@ -35,13 +36,19 @@ class UsersService {
   addUser(user) {
     if (this.isValidUser(user)) {
       this.users.push(user);
-      // this.saveUsersInDB();
+      this.saveUsersInDB();
     }
+  }
+
+  deleteUser(username) {
+    const userIndex = this.users.findIndex((user) => this.getUsername(user) === username);
+    this.users.splice(userIndex, 1);
+    this.saveUsersInDB();
   }
 
   saveUsersInDB() {
     const usersJSON = JSON.stringify(this.users, null,  2);
-    fs.writeFile('../models/users.json', usersJSON, 'utf8', console.log);
+    fs.writeFile(path.join(__dirname, '../models/users.json'), usersJSON, 'utf8', console.log);
   }
 
   getUserByUsername(username) {
@@ -90,11 +97,6 @@ class UsersService {
 
   getAllUsers() {
     return this.users;
-  }
-
-  deleteUser(username) {
-    const userIndex = this.users.findIndex((user) => this.getUsername(user) === username);
-    this.users.splice(userIndex, 1);
   }
 }
 
