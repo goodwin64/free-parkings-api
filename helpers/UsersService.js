@@ -9,6 +9,7 @@ const defaultUsers = require('../models/users.json');
 class UsersService {
   constructor() {
     this.users = [...defaultUsers];
+    this.lastUserId = this.users.length - 1;
   }
 
   createUser({ username = '', password = '', avatarUrl = '', gender = '' }) {
@@ -22,6 +23,7 @@ class UsersService {
         password,
       },
       personalInfo: {
+        id: ++this.lastUserId,
         role: ROLE_DRIVER,
         username,
         avatarUrl,
