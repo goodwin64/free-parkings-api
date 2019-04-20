@@ -6,8 +6,8 @@ const UsersService = require('../helpers/UsersService');
 
 router.post('/login', function (req, res) {
   const user = UsersService.getUserByCredentials(req.body.username, req.body.password);
-  if (user) {
-    user.authInfo.accessToken = UsersService.createAccessToken();
+  if (UsersService.isValidUser(user)) {
+    UsersService.onSuccessAuth(user);
     res.status(200);
     res.json(UsersService.getSuccessfulLoginData(user));
   } else {

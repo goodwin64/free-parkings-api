@@ -116,6 +116,11 @@ class UsersService {
   setAvatarUrl(user, imageUrl) {
     user.personalInfo.avatarUrl = imageUrl;
   }
+
+  onSuccessAuth(user) {
+    user.authInfo.accessToken = this.createAccessToken();
+    this.saveUsersInDB();
+  }
 }
 
 module.exports = new UsersService();
