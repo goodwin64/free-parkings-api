@@ -1,32 +1,48 @@
 [
   {
-    "credentials": {
-      "username": "admin",
+    "authInfo": {
+      "accessToken": null,
       "password": "admin"
     },
-    "authInfo": {
-      "role": "ADMIN",
-      "accessToken": null
-    },
     "personalInfo": {
+      "id": 1,
+      "role": "ADMIN",
       "username": "admin",
       "avatarUrl": "https://media.licdn.com/dms/image/C4E03AQEeds_cS96caQ/profile-displayphoto-shrink_200_200/0?e=1560384000&v=beta&t=AR3x3rpGS8Bd78VcN4ESM8cayyfrrXp8eG0ejjgQAUE",
-      "gender": "male"
+      "gender": "male",
+      "name": "Max",
+      "surname": "Donchenko"
+    },
+    "carInfo": {
+      "manufacturer": "Honda",
+      "model": "Civic",
+      "year": 2008,
+      "color": "#000000",
+      "length": 4518,
+      "width": 2076,
+      "height": 1434
     }
   },
   {
-    "credentials": {
-      "username": "driver",
+    "authInfo": {
+      "accessToken": null,
       "password": "driver"
     },
-    "authInfo": {
-      "role": "DRIVER",
-      "accessToken": null
-    },
     "personalInfo": {
+      "id": 2,
+      "role": "DRIVER",
       "username": "driver",
       "avatarUrl": "https://ae01.alicdn.com/kf/HTB1wyP2KFXXXXbvXFXXq6xXFXXXX/Parzin-Oversized-Sunglasses-Women-Female-Polarized-Sunglasses-Black-Elegant-Shades-Driver-Driving-Glasses-With-Case-9515.jpg_50x50.jpg",
       "gender": "female"
+    },
+    "carInfo": {
+      "manufacturer": "Dacia",
+      "model": "Logan",
+      "year": 2016,
+      "color": "#796f65",
+      "length": 4347,
+      "width": 1733,
+      "height": 1517
     }
   }
 ]

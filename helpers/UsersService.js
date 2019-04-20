@@ -17,15 +17,12 @@ class UsersService {
     }
 
     return {
-      credentials: {
-        username,
+      authInfo: {
+        accessToken: null,
         password,
       },
-      authInfo: {
-        role: ROLE_DRIVER,
-        accessToken: null,
-      },
       personalInfo: {
+        role: ROLE_DRIVER,
         username,
         avatarUrl,
         gender,
@@ -52,15 +49,19 @@ class UsersService {
   }
 
   getUserByUsername(username) {
-    return this.users.find((user) => user.credentials.username === username);
+    return this.users.find((user) => user.personalInfo.username === username);
   }
 
   getUserByCredentials(username, password) {
-    return this.users.find((user) => user.credentials.username === username && user.credentials.password === password);
+    return this.users.find((user) => user.personalInfo.username === username && user.authInfo.password === password);
   }
 
   getUserByAccessToken(accessToken) {
     return this.users.find((user) => user.authInfo.accessToken === accessToken);
+  }
+
+  getUserById(id) {
+    return this.users.find((user) => user.personalInfo.id === id);
   }
 
   isUserExist(username) {
@@ -78,9 +79,8 @@ class UsersService {
   isValidUser(user) {
     return (
       Boolean(user)
-      && user.credentials && user.credentials.username && user.credentials.password
-      && user.authInfo && user.authInfo.role
-      && user.personalInfo && user.personalInfo.username
+      && user.authInfo && user.authInfo.password
+      && user.personalInfo && user.personalInfo.role && user.personalInfo.username
     );
   }
 
@@ -89,14 +89,30 @@ class UsersService {
   }
 
   getUserPublicInfo(user) {
+    return user.personalInfo;
+  }
+
+  getSuccessfulLoginData(user) {
     return {
-      authInfo: user.authInfo,
+      accessToken: user.authInfo.accessToken,
       personalInfo: user.personalInfo,
     };
   }
 
   getAllUsers() {
     return this.users;
+  }
+
+  isAdmin(user) {
+    return this.isValidUser(user) && user.personalInfo.role === ROLE_ADMIN;
+  }
+
+  isTheSameUser(user1, user2) {
+    return this.isValidUser(user1) && this.isValidUser(user2) && user1.id === user2.id;
+  }
+
+  setAvatarUrl(user, imageUrl) {
+    user.personalInfo.avatarUrl = imageUrl;
   }
 }
 

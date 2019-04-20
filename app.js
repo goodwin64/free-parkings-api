@@ -10,6 +10,7 @@ const indexRouter = require('./routes');
 const parkingsRouter = require('./routes/parkings');
 const areaRouter = require('./routes/areaRouter');
 const authRouter = require('./routes/authRouter');
+const userRouter = require('./routes/userRouter');
 // const basicAuth = require('./helpers/basic-auth');
 const errorHandler = require('./helpers/error-handler');
 const swaggerDocument = require('./swagger.json');
@@ -39,6 +40,7 @@ app.use('/', indexRouter);
 app.use('/parkings', parkingsRouter);
 app.use('/area', areaRouter);
 app.use('/auth', authRouter);
+app.use('/users', userRouter);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

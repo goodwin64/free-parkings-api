@@ -35,20 +35,15 @@
             "schema": {
               "type": "object",
               "properties": {
-                "authInfo": {
+                "accessToken": {
+                  "type": "string"
+                },
+                "personalInfo": {
                   "type": "object",
                   "properties": {
                     "role": {
                       "type": "string"
                     },
-                    "accessToken": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "personalInfo": {
-                  "type": "object",
-                  "properties": {
                     "username": {
                       "type": "string"
                     },
@@ -78,8 +73,8 @@
         "description": "Get user access token. If correct - clear its' token.",
         "parameters": [
           {
-            "name": "accessToken",
-            "in": "formData",
+            "name": "access_token",
+            "in": "header",
             "description": "Access token given by server when user logged in.",
             "type": "string"
           }
@@ -142,6 +137,100 @@
             "examples": {
               "NOT unique username": "username XXX already exists",
               "Some of parameters are invalid": "invalid parameters"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Admin fetches all users data",
+        "description": "Get user accessToken. If admin - send all users as array.",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All users: successfully",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "All users: denied",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "User fetches specific user data",
+        "description": "Get user accessToken. If allowed - send user data.",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "type": "number",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Specific user: successfully",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Specific user: denied",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/avatar": {
+      "post": {
+        "summary": "User updates avatar (profile picture)",
+        "description": "Get user access_token and new avatar url. If correct - store in DB and nofify.",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "header",
+            "description": "Access token given by server when user logged in.",
+            "type": "string"
+          },
+          {
+            "name": "imageUrl",
+            "in": "formData",
+            "description": "New avatar URL (absolute path or base64)",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "avatar has been updated",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "unable to update avatar",
+            "schema": {
+              "type": "string"
             }
           }
         }

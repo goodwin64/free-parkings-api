@@ -9,7 +9,7 @@ router.post('/login', function (req, res) {
   if (user) {
     user.authInfo.accessToken = UsersService.createAccessToken();
     res.status(200);
-    res.json(UsersService.getUserPublicInfo(user));
+    res.json(UsersService.getSuccessfulLoginData(user));
   } else {
     res.status(403);
     res.json('wrong username or password');
@@ -18,7 +18,7 @@ router.post('/login', function (req, res) {
 
 
 router.post('/logout', function (req, res) {
-  const user = UsersService.getUserByAccessToken(req.body.accessToken);
+  const user = UsersService.getUserByAccessToken(req.headers.access_token);
   if (UsersService.isValidUser(user)) {
     UsersService.clearAccessToken(user);
     res.status(200);
@@ -47,5 +47,6 @@ router.post('/signup', function (req, res) {
     res.json('invalid parameters');
   }
 });
+
 
 module.exports = router;
