@@ -4,6 +4,7 @@ const path = require('path');
 
 const { ROLE_ADMIN, ROLE_DRIVER } = require('../types/user');
 const defaultUsers = require('../models/users.json');
+const CarService = require('./CarService');
 
 
 class UsersService {
@@ -18,15 +19,6 @@ class UsersService {
       'defaultCountry',
       'role',
     ]);
-    this.carInfoSchema = {
-      manufacturer: 'string',
-      model: 'string',
-      year: 'number',
-      color: 'string',
-      length: 'number',
-      width: 'number',
-      height: 'number',
-    };
   }
 
   createUser({ username = '', password = '', avatarUrl = '', gender = '' }) {
@@ -153,19 +145,12 @@ class UsersService {
   }
 
   updateAllCarParameters(user, newCarParameters) {
-    Object
-      .keys(newCarParameters)
-      .forEach(key => this.updateCarParameter(user, key, newCarParameters[key]));
+    const preparedCarParameters = CarService.getPreparedCarParameters(newCarParameters);
+    user.carInfo = {
+      ...user.carInfo,
+      ...preparedCarParameters,
+    };
     this.saveUsersInDB();
-  }
-
-  updateCarParameter(user, carParameterKey, carParameterValue) {
-    if (carParameterKey in this.carInfoSchema && typeof carParameterValue === this.carInfoSchema[carParameterKey]) {
-      user.carInfo = {
-        ...user.carInfo,
-        [carParameterKey]: carParameterValue,
-      }
-    }
   }
 }
 
