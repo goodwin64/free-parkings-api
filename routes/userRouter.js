@@ -44,4 +44,32 @@ router.post('/:id', function (req, res) {
 });
 
 
+router.get('/:id/car', function (req, res) {
+  const user = UsersService.getUserById(Number(req.params.id));
+  const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
+  if (UsersService.isAdmin(userThatMadeRequest) || UsersService.isTheSameUser(user, userThatMadeRequest)) {
+    res.status(200);
+    res.json(UsersService.getCarInfo(user));
+  } else {
+    res.status(403);
+    res.json('access denied');
+  }
+});
+
+
+router.post('/:id/car', function (req, res) {
+  const user = UsersService.getUserById(Number(req.params.id));
+  const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
+  const newCarParameters = { ...req.body };
+  if (UsersService.isTheSameUser(user, userThatMadeRequest)) {
+    UsersService.updateAllCarParameters(user, newCarParameters);
+    res.status(200);
+    res.json('car info has been updated');
+  } else {
+    res.status(403);
+    res.json('unable to update car info');
+  }
+});
+
+
 module.exports = router;

@@ -76,7 +76,8 @@
             "name": "access_token",
             "in": "header",
             "description": "Access token given by server when user logged in.",
-            "type": "string"
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
@@ -150,7 +151,9 @@
           {
             "name": "access_token",
             "in": "header",
-            "type": "string"
+            "description": "Access token given by server when user logged in.",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
@@ -177,7 +180,9 @@
           {
             "name": "access_token",
             "in": "header",
-            "type": "string"
+            "description": "Access token given by server when user logged in.",
+            "type": "string",
+            "required": true
           },
           {
             "name": "id",
@@ -209,7 +214,8 @@
             "name": "access_token",
             "in": "header",
             "description": "Access token given by server when user logged in.",
-            "type": "string"
+            "type": "string",
+            "required": true
           },
           {
             "name": "role",
@@ -263,6 +269,123 @@
           },
           "403": {
             "description": "unable to update personal info",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/car": {
+      "get": {
+        "summary": "User fetches specific user's car data",
+        "description": "Get user accessToken. If allowed - send user's car data.",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "header",
+            "description": "Access token given by server when user logged in.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "type": "number",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Specific user's car data: successfully",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Specific user's car data: denied",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "User updates car data",
+        "description": "Get user access_token and updates in profile info. If correct - store in DB and nofify.",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "header",
+            "description": "Access token given by server when user logged in.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "manufacturer",
+            "in": "formData",
+            "description": "New car manufacturer",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "model",
+            "in": "formData",
+            "description": "New car model",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "year",
+            "in": "formData",
+            "description": "New car year",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "color",
+            "in": "formData",
+            "description": "New car color",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "length",
+            "in": "formData",
+            "description": "New car length",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "width",
+            "in": "formData",
+            "description": "New car width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "in": "formData",
+            "description": "New car height",
+            "type": "number",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "car info has been updated",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "unable to update car info",
             "schema": {
               "type": "string"
             }

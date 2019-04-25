@@ -17,7 +17,16 @@ class UsersService {
       'gender',
       'defaultCountry',
       'role',
-    ])
+    ]);
+    this.carInfoSchema = {
+      manufacturer: 'string',
+      model: 'string',
+      year: 'number',
+      color: 'string',
+      length: 'number',
+      width: 'number',
+      height: 'number',
+    };
   }
 
   createUser({ username = '', password = '', avatarUrl = '', gender = '' }) {
@@ -137,6 +146,26 @@ class UsersService {
   onSuccessAuth(user) {
     user.authInfo.accessToken = this.createAccessToken();
     this.saveUsersInDB();
+  }
+
+  getCarInfo(user) {
+    return user && user.carInfo;
+  }
+
+  updateAllCarParameters(user, newCarParameters) {
+    Object
+      .keys(newCarParameters)
+      .forEach(key => this.updateCarParameter(user, key, newCarParameters[key]));
+    this.saveUsersInDB();
+  }
+
+  updateCarParameter(user, carParameterKey, carParameterValue) {
+    if (carParameterKey in this.carInfoSchema && typeof carParameterValue === this.carInfoSchema[carParameterKey]) {
+      user.carInfo = {
+        ...user.carInfo,
+        [carParameterKey]: carParameterValue,
+      }
+    }
   }
 }
 
