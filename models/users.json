@@ -1,17 +1,19 @@
 [
   {
     "authInfo": {
-      "accessToken": null,
+      "accessToken": "8ec10592-89a1-4806-8714-6bd95837469a",
       "password": "admin"
     },
     "personalInfo": {
       "id": 1,
       "role": "ADMIN",
-      "username": "admin",
+      "username": "admin222",
       "avatarUrl": "https://media.licdn.com/dms/image/C4E03AQEeds_cS96caQ/profile-displayphoto-shrink_200_200/0?e=1560384000&v=beta&t=AR3x3rpGS8Bd78VcN4ESM8cayyfrrXp8eG0ejjgQAUE",
       "gender": "male",
       "name": "Max",
-      "surname": "Donchenko"
+      "surname": "Donchenko",
+      "defaultCountry": "RWANDA",
+      "fullname": "Max Donchenko"
     },
     "carInfo": {
       "manufacturer": "Honda",
@@ -32,7 +34,7 @@
       "id": 2,
       "role": "DRIVER",
       "username": "driver",
-      "avatarUrl": "https://ae01.alicdn.com/kf/HTB1wyP2KFXXXXbvXFXXq6xXFXXXX/Parzin-Oversized-Sunglasses-Women-Female-Polarized-Sunglasses-Black-Elegant-Shades-Driver-Driving-Glasses-With-Case-9515.jpg_50x50.jpg",
+      "avatarUrl": "https://images.sftcdn.net/images/t_app-logo-l,f_auto,dpr_auto/p/0085f71f-8a3c-45bd-ae99-b7774d2d434f/125997553/where-is-cat-icon.png",
       "gender": "female"
     },
     "carInfo": {

@@ -200,12 +200,10 @@
             }
           }
         }
-      }
-    },
-    "/users/{id}/avatar": {
+      },
       "post": {
-        "summary": "User updates avatar (profile picture)",
-        "description": "Get user access_token and new avatar url. If correct - store in DB and nofify.",
+        "summary": "User updates profile info (role / avatar / username / fullname / gender / country)",
+        "description": "Get user access_token and updates in profile info. If correct - store in DB and nofify.",
         "parameters": [
           {
             "name": "access_token",
@@ -214,21 +212,57 @@
             "type": "string"
           },
           {
+            "name": "role",
+            "in": "formData",
+            "description": "New role (admin / driver)",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "imageUrl",
             "in": "formData",
             "description": "New avatar URL (absolute path or base64)",
-            "type": "string"
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "username",
+            "in": "formData",
+            "description": "New username",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "fullname",
+            "in": "formData",
+            "description": "New fullname",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "gender",
+            "in": "formData",
+            "description": "New gender",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultCountry",
+            "in": "formData",
+            "description": "New default country",
+            "type": "string",
+            "required": false
           }
         ],
         "responses": {
           "200": {
-            "description": "avatar has been updated",
+            "description": "personal info has been updated",
             "schema": {
               "type": "string"
             }
           },
           "403": {
-            "description": "unable to update avatar",
+            "description": "unable to update personal info",
             "schema": {
               "type": "string"
             }

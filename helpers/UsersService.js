@@ -10,6 +10,14 @@ class UsersService {
   constructor() {
     this.users = [...defaultUsers];
     this.lastUserId = this.users.length - 1;
+    this.personalInfoKeys = new Set([
+      'imageUrl',
+      'username',
+      'fullname',
+      'gender',
+      'defaultCountry',
+      'role',
+    ])
   }
 
   createUser({ username = '', password = '', avatarUrl = '', gender = '' }) {
@@ -113,8 +121,17 @@ class UsersService {
     return this.isValidUser(user1) && this.isValidUser(user2) && user1.id === user2.id;
   }
 
-  setAvatarUrl(user, imageUrl) {
-    user.personalInfo.avatarUrl = imageUrl;
+  updatePersonalInfoField(user, key, value) {
+    if (this.personalInfoKeys.has(key)) {
+      user.personalInfo[key] = value;
+    }
+  }
+
+  updatePersonalInfoAllFields(user, fieldsToUpdate) {
+    Object
+      .keys(fieldsToUpdate)
+      .forEach(key => this.updatePersonalInfoField(user, key, fieldsToUpdate[key]));
+    this.saveUsersInDB();
   }
 
   onSuccessAuth(user) {

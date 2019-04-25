@@ -29,16 +29,17 @@ router.get('/:id', function (req, res) {
 });
 
 
-router.post('/:id/avatar', function (req, res) {
+router.post('/:id', function (req, res) {
+  const user = UsersService.getUserById(Number(req.params.id));
   const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
-  const imageUrl = req.body.imageUrl;
-  if (userThatMadeRequest && typeof imageUrl === 'string') {
-    UsersService.setAvatarUrl(userThatMadeRequest, imageUrl);
+  const personalInfoFields = { ...req.body };
+  if (UsersService.isAdmin(userThatMadeRequest) || UsersService.isTheSameUser(user, userThatMadeRequest)) {
+    UsersService.updatePersonalInfoAllFields(user, personalInfoFields);
     res.status(200);
-    res.json('avatar has been updated');
+    res.json('personal info has been updated');
   } else {
     res.status(403);
-    res.json('unable to update avatar');
+    res.json('unable to update personal info');
   }
 });
 
