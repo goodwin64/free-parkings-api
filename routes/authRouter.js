@@ -49,17 +49,4 @@ router.post('/signup', function (req, res) {
 });
 
 
-router.post('/isAccessTokenValid', function (req, res) {
-  const accessToken = req.headers.access_token;
-  const user = UsersService.getUserByAccessToken(accessToken);
-  if (user) {
-    res.status(200);
-    res.json(true);
-  } else {
-    res.status(403);
-    res.json(false);
-  }
-});
-
-
 module.exports = router;

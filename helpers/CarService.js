@@ -3,6 +3,7 @@ const manufacturersList = require('../models/carManufacturers.json');
 
 class CarService {
   constructor() {
+    this.manufacturersList = [...manufacturersList];
     this.manufacturersSet = new Set(manufacturersList);
 
     this.carInfoSchema = {
@@ -17,7 +18,7 @@ class CarService {
   }
 
   getPreparedCarParameters(rawCarParameters) {
-    Object
+    return Object
       .keys(rawCarParameters)
       .reduce((acc, key) => ({
         ...acc,
@@ -36,6 +37,10 @@ class CarService {
     return {
       [carParameterKey]: carParameterValue,
     };
+  }
+
+  getManufacturersList() {
+    return this.manufacturersList;
   }
 }
 
