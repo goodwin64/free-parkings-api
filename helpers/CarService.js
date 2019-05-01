@@ -9,6 +9,7 @@ class CarService {
     this.carInfoSchema = {
       manufacturer: 'string',
       model: 'string',
+      number: 'string',
       year: 'number',
       color: 'string',
       length: 'number',

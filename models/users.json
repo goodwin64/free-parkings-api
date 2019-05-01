@@ -40,11 +40,12 @@
     "carInfo": {
       "manufacturer": "Dacia",
       "model": "Logan",
-      "year": 2016,
-      "color": "#796f65",
+      "year": 2010,
+      "color": "#b1be27",
       "length": 4347,
       "width": 1733,
-      "height": 1517
+      "height": 1517,
+      "number": "AA 1289 KE"
     }
   }
 ]
