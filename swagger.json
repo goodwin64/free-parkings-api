@@ -13,6 +13,7 @@
   "paths": {
     "/auth/login": {
       "post": {
+        "tags": ["auth"],
         "summary": "User log in",
         "description": "Get user credentials. If correct - send user info including 'accessToken' in response.",
         "parameters": [
@@ -69,6 +70,7 @@
     },
     "/auth/logout": {
       "post": {
+        "tags": ["auth"],
         "summary": "User log out",
         "description": "Get user access token. If correct - clear its' token.",
         "parameters": [
@@ -104,6 +106,7 @@
     },
     "/auth/signup": {
       "post": {
+        "tags": ["auth"],
         "summary": "User sign up (register)",
         "description": "Get user credentials. If correct - store in DB and nofify.",
         "parameters": [
@@ -145,6 +148,7 @@
     },
     "/users": {
       "get": {
+        "tags": ["users"],
         "summary": "Admin fetches all users data",
         "description": "Get user accessToken. If admin - send all users as array.",
         "parameters": [
@@ -174,6 +178,7 @@
     },
     "/users/{id}": {
       "get": {
+        "tags": ["users"],
         "summary": "User fetches specific user data",
         "description": "Get user accessToken. If allowed - send user data.",
         "parameters": [
@@ -207,6 +212,7 @@
         }
       },
       "post": {
+        "tags": ["users"],
         "summary": "User updates profile info (role / avatar / username / fullname / gender / country)",
         "description": "Get user access_token and updates in profile info. If correct - store in DB and nofify.",
         "parameters": [
@@ -278,6 +284,7 @@
     },
     "/users/{id}/car": {
       "get": {
+        "tags": ["users", "cars"],
         "summary": "User fetches specific user's car data",
         "description": "Get user accessToken. If allowed - send user's car data.",
         "parameters": [
@@ -311,6 +318,7 @@
         }
       },
       "post": {
+        "tags": ["users", "cars"],
         "summary": "User updates car data",
         "description": "Get user access_token and updates in profile info. If correct - store in DB and nofify.",
         "parameters": [
@@ -386,6 +394,174 @@
           },
           "403": {
             "description": "unable to update car info",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/parkings": {
+      "get": {
+        "tags": ["parkings"],
+        "summary": "Everyone can fetch all parkings data",
+        "description": "Send all parkings as array. If lat/lon/radius specified - send only suitable parkings.",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "description": "Latitude",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "description": "Longitude",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "radius",
+            "in": "query",
+            "description": "Radius (meters)",
+            "type": "number",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All parkings: successfully",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "All parkings: denied",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["parkings"],
+        "summary": "Admin can delete all parkings EITHER on the whole map OR in the specific circle-like area",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "header",
+            "description": "Access token given by server when user logged in.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "description": "Latitude",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "description": "Longitude",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "radius",
+            "in": "query",
+            "description": "Radius (meters)",
+            "type": "number",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Specific parking deletion: successfully",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Specific parking deletion: denied",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Specific parking deletion: parking not found",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/parkings/{id}": {
+      "get": {
+        "tags": ["parkings"],
+        "summary": "Everyone can fetch specific parking data",
+        "description": "Send parking as array.",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "number",
+            "in": "path",
+            "description": "Parking unique id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Specific parking: successfully",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Specific parking: denied",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["parkings"],
+        "summary": "Admin can delete specific parking",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "number",
+            "in": "path",
+            "description": "Parking unique id",
+            "required": true
+          },
+          {
+            "name": "access_token",
+            "in": "header",
+            "description": "Access token given by server when user logged in.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Specific parking deletion: successfully",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Specific parking deletion: denied",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Specific parking deletion: parking not found",
             "schema": {
               "type": "string"
             }

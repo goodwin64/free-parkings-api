@@ -1,6 +1,6 @@
 [
   {
-    "parkingGeometry": [
+    "geometry": [
       [
         48.95788706350293,
         9.135303380395044
@@ -10,18 +10,18 @@
         9.135202797556985
       ]
     ],
-    "cost": "2€/1h",
+    "costPerHour": 2,
     "maxStayDuration": null,
-    "maxHeight": null,
+    "height": null,
     "restrictions": [],
     "features": [
       "Disabled Spaces",
       "Lit"
     ],
-    "id": "u0wqxbs07gx"
+    "id": 1
   },
   {
-    "parkingGeometry": [
+    "geometry": [
       [
         48.95685418206132,
         9.134726514246722
@@ -31,17 +31,17 @@
         9.13473321976926
       ]
     ],
-    "cost": "2€/1h",
+    "costPerHour": 2,
     "maxStayDuration": null,
-    "maxHeight": null,
+    "height": null,
     "restrictions": [],
     "features": [
       "Lit"
     ],
-    "id": "u0wqxb7dqe1"
+    "id": 2
   },
   {
-    "parkingGeometry": [
+    "geometry": [
       [
         48.956799062664786,
         9.13480161609914
@@ -51,17 +51,17 @@
         9.13482709708478
       ]
     ],
-    "cost": "2€/1h",
+    "costPerHour": 2,
     "maxStayDuration": null,
-    "maxHeight": null,
+    "height": null,
     "restrictions": [],
     "features": [
       "Lit"
     ],
-    "id": "u0wqxb7f02c"
+    "id": 3
   },
   {
-    "parkingGeometry": [
+    "geometry": [
       [
         48.957625704472946,
         9.136171075011362
@@ -71,54 +71,54 @@
         9.13647684683906
       ]
     ],
-    "cost": "2€/1h",
+    "costPerHour": 2,
     "maxStayDuration": null,
-    "maxHeight": null,
+    "height": null,
     "restrictions": [],
     "features": [
       "Lit"
     ],
-    "id": "u0wqxbkyb4y"
+    "id": 4
   },
   {
-    "parkingGeometry": [
+    "geometry": [
       [
-        48.95661062832736,
-        9.134662206681924
+        50.95661062832736,
+        30.134662206681924
       ],
       [
-        48.95676033179469,
-        9.134705122026162
+        50.95676033179469,
+        30.134705122026162
       ]
     ],
-    "cost": "2€/1h",
+    "costPerHour": 2,
     "maxStayDuration": null,
-    "maxHeight": null,
+    "height": null,
     "restrictions": [],
     "features": [
       "Lit"
     ],
-    "id": "u0wqxb78vj9"
+    "id": 5
   },
   {
-    "parkingGeometry": [
+    "geometry": [
       [
-        48.95638622280579,
-        9.135982096195221
+        50.95638622280579,
+        30.135982096195221
       ],
       [
-        48.956514792271605,
-        9.13474828004837
+        50.956514792271605,
+        30.13474828004837
       ]
     ],
-    "cost": "2€/1h",
+    "costPerHour": 2,
     "maxStayDuration": null,
-    "maxHeight": null,
+    "height": null,
     "restrictions": [],
     "features": [
       "Disabled Spaces",
       "Lit"
     ],
-    "id": "u0wqxbhxegf"
+    "id": 6
   }
 ]
