@@ -8,8 +8,10 @@ const UsersService = require('../helpers/UsersService');
 router.get('/', function (req, res, next) {
   const { lat, lon, radius } = req.query;
   if ('lat' in req.query && 'lon' in req.query && 'radius' in req.query) {
+    res.status(200);
     res.json(ParkingsService.getParkingsInArea(+lat, +lon, +radius));
   } else {
+    res.status(200);
     res.json(ParkingsService.getAllParkings());
   }
 });
@@ -22,8 +24,15 @@ router.put('/', function (req, res, next) {
 
   if (UsersService.isAdmin(userThatMadeRequest)) {
     const newParking = ParkingsService.createParking(parkingParameters);
-    res.json(newParking);
+    if (newParking) {
+      res.status(201);
+      res.json(newParking);
+    } else {
+      res.status(404);
+      res.json('wrong parking parameters');
+    }
   } else {
+    res.status(403);
     res.json('access denied');
   }
 });
@@ -56,13 +65,13 @@ router.delete('/', function (req, res, next) {
 
 
 router.get('/:id', function (req, res, next) {
-  const parkingId = Number(req.params.id);
+  const parkingId = req.params.id;
   res.json(ParkingsService.getParkingById(parkingId));
 });
 
 
 router.put('/:id', function (req, res, next) {
-  const parkingId = Number(req.params.id);
+  const parkingId = req.params.id;
   const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
   const newParkingParameters = { ...req.body };
 
@@ -82,7 +91,7 @@ router.put('/:id', function (req, res, next) {
 
 
 router.delete('/:id', function (req, res, next) {
-  const parkingId = Number(req.params.id);
+  const parkingId = req.params.id;
   const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
 
   if (UsersService.isAdmin(userThatMadeRequest)) {

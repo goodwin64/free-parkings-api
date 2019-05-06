@@ -1,21 +1,40 @@
-const distance = require('@turf/distance');
 const fs = require('fs');
 const path = require('path');
+const uuidV4 = require('uuid/v4');
+const isNull = require('lodash/isNull');
+const distance = require('@turf/distance');
+const isString = require('lodash/isString');
 
 const parkingsList = require('../models/parkings.json');
 
+
+function isValidCoordinate(coord, index) {
+  if (index === 0) {
+    return isFinite(coord) && coord >= -90 && coord <= 90;
+  } else if (index === 1) {
+    return isFinite(coord) && coord >= -180 && coord <= 180;
+  }
+  return false;
+}
+
+function isValidPoint(point) {
+  return Array.isArray(point) && point.length === 2 && point.every(isValidCoordinate);
+}
 
 class ParkingsService {
   constructor() {
     this.parkingsList = [...parkingsList];
 
     this.parkingSchema = {
-      id: 'string',
-      geometry: 'object',
-      length: 'number',
-      width: 'number',
-      height: 'number',
-      costPerHour: 'number',
+      id: isString,
+      geometry: (prop) => Array.isArray(prop) && prop.every(isValidPoint),
+      length: (prop) => typeof prop === 'number',
+      width: (prop) => typeof prop === 'number',
+      height: (prop) => typeof prop === 'number',
+      costPerHour: (prop) => typeof prop === 'number' || isNull(prop),
+      maxStayDuration: (prop) => typeof prop === 'number',
+      restrictions: (prop) => Array.isArray(prop) && prop.every(isString),
+      features: (prop) => Array.isArray(prop) && prop.every(isString),
     };
   }
 
@@ -35,11 +54,16 @@ class ParkingsService {
 
   prepareParkingParameter(parkingParameterKey, parkingParameterValue) {
     const isKeyUnknown = !parkingParameterKey in this.parkingSchema;
-    const isInvalidType = typeof parkingParameterValue !== this.parkingSchema[parkingParameterKey];
-
-    if (isKeyUnknown || isInvalidType) {
+    if (isKeyUnknown) {
       return null;
     }
+
+    const validator = this.parkingSchema[parkingParameterKey];
+    const isInvalidType = !validator(parkingParameterValue);
+    if (isInvalidType) {
+      return null;
+    }
+
     return {
       [parkingParameterKey]: parkingParameterValue,
     };
@@ -54,13 +78,17 @@ class ParkingsService {
   }
 
   createParking(rawParking) {
-    const preparedParking = {
-      ...this.getPreparedParking(rawParking),
-      id: this.parkingsList.length + 1,
-    };
-    this.parkingsList.push(preparedParking);
-    this.saveParkingsInDB();
-    return preparedParking;
+    if (rawParking && Array.isArray(rawParking.geometry)) {
+      const preparedParking = {
+        ...this.getPreparedParking(rawParking),
+        id: uuidV4().concat(this.parkingsList.length + 1),
+      };
+      this.parkingsList.push(preparedParking);
+      this.saveParkingsInDB();
+      return preparedParking;
+    } else {
+      return null;
+    }
   }
 
   updateParking(parkingId, newParameters) {
