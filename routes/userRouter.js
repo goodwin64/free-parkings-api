@@ -17,8 +17,9 @@ router.get('/', function (req, res) {
 
 
 router.get('/:id', function (req, res) {
-  const user = UsersService.getUserById(Number(req.params.id));
+  const user = UsersService.getUserById(req.params.id);
   const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
+
   if (UsersService.isAdmin(userThatMadeRequest) || UsersService.isTheSameUser(user, userThatMadeRequest)) {
     res.status(200);
     res.json(UsersService.getUserPublicInfo(user));
@@ -30,7 +31,7 @@ router.get('/:id', function (req, res) {
 
 
 router.post('/:id', function (req, res) {
-  const user = UsersService.getUserById(Number(req.params.id));
+  const user = UsersService.getUserById(req.params.id);
   const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
   const personalInfoFields = { ...req.body };
   if (UsersService.isAdmin(userThatMadeRequest) || UsersService.isTheSameUser(user, userThatMadeRequest)) {
@@ -44,8 +45,23 @@ router.post('/:id', function (req, res) {
 });
 
 
+router.delete('/:id', function (req, res) {
+  const user = UsersService.getUserById(req.params.id);
+  const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
+
+  if (UsersService.isTheSameUser(user, userThatMadeRequest)) {
+    UsersService.deleteUser(user);
+    res.status(200);
+    res.json('user deleted successfully');
+  } else {
+    res.status(403);
+    res.json('access denied');
+  }
+});
+
+
 router.get('/:id/car', function (req, res) {
-  const user = UsersService.getUserById(Number(req.params.id));
+  const user = UsersService.getUserById(req.params.id);
   const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
   if (UsersService.isAdmin(userThatMadeRequest) || UsersService.isTheSameUser(user, userThatMadeRequest)) {
     res.status(200);
@@ -58,7 +74,7 @@ router.get('/:id/car', function (req, res) {
 
 
 router.post('/:id/car', function (req, res) {
-  const user = UsersService.getUserById(Number(req.params.id));
+  const user = UsersService.getUserById(req.params.id);
   const userThatMadeRequest = UsersService.getUserByAccessToken(req.headers.access_token);
   const newCarParameters = { ...req.body };
   if (UsersService.isTheSameUser(user, userThatMadeRequest)) {

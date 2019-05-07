@@ -10,7 +10,6 @@ const CarService = require('./CarService');
 class UsersService {
   constructor() {
     this.users = [...defaultUsers];
-    this.lastUserId = this.users.length - 1;
     this.personalInfoKeys = new Set([
       'imageUrl',
       'username',
@@ -32,7 +31,7 @@ class UsersService {
         password,
       },
       personalInfo: {
-        id: ++this.lastUserId,
+        id: uuidV4().slice(0, 5).concat('-' + this.users.length),
         role: ROLE_DRIVER,
         username,
         avatarUrl,
@@ -48,8 +47,8 @@ class UsersService {
     }
   }
 
-  deleteUser(username) {
-    const userIndex = this.users.findIndex((user) => this.getUsername(user) === username);
+  deleteUser(userToDelete) {
+    const userIndex = this.users.findIndex((user) => this.getId(user) === this.getId(userToDelete));
     this.users.splice(userIndex, 1);
     this.saveUsersInDB();
   }
@@ -95,8 +94,8 @@ class UsersService {
     );
   }
 
-  getUsername(user) {
-    return user.personalInfo.username;
+  getId(user) {
+    return user.personalInfo.id;
   }
 
   getUserPublicInfo(user) {
