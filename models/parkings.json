@@ -328,5 +328,81 @@
     "width": 5000,
     "height": 5000,
     "id": "7a99d584-7e6a-4e31-8fd7-caf0743ce76614"
+  },
+  {
+    "costPerHour": 0.33,
+    "maxStayDuration": 90000,
+    "features": [],
+    "restrictions": [],
+    "geometry": [
+      [
+        50.447834,
+        30.453252
+      ],
+      [
+        50.447691,
+        30.454121
+      ]
+    ],
+    "length": 10000,
+    "width": 2800,
+    "height": 5000,
+    "id": "b0cf4a3c-c00c-476d-a8ec-fba2bd9f5fe915"
+  },
+  {
+    "costPerHour": 0.5,
+    "maxStayDuration": 480,
+    "features": [],
+    "restrictions": [],
+    "geometry": [
+      [
+        50.448628,
+        30.45424
+      ],
+      [
+        50.448498,
+        30.455302
+      ],
+      [
+        50.449181,
+        30.455592
+      ]
+    ],
+    "length": 200000,
+    "width": 3000,
+    "height": 5000,
+    "id": "22037472-3aa4-4e4a-922f-33e4b8c40c5416"
+  },
+  {
+    "costPerHour": 0.2,
+    "maxStayDuration": 3000,
+    "features": [],
+    "restrictions": [],
+    "geometry": [
+      [
+        50.448572,
+        30.45263
+      ],
+      [
+        50.448203,
+        30.452523
+      ],
+      [
+        50.448387,
+        30.451461
+      ],
+      [
+        50.448722,
+        30.451611
+      ],
+      [
+        50.448825,
+        30.450849
+      ]
+    ],
+    "length": 300000,
+    "width": 3000,
+    "height": 5000,
+    "id": "0f2ed0b3-8eca-44d2-90e0-283ccf3ec3d117"
   }
 ]
