@@ -20,7 +20,7 @@ class UsersService {
     ]);
   }
 
-  createUser({ username = '', password = '', avatarUrl = '', gender = '' }) {
+  createUser({ username = '', password = '', imageUrl = '', gender = '' }) {
     if (!username || !password) {
       return null;
     }
@@ -34,7 +34,7 @@ class UsersService {
         id: uuidV4().slice(0, 5).concat('-' + this.users.length),
         role: ROLE_DRIVER,
         username,
-        avatarUrl,
+        imageUrl,
         gender,
       },
     };
