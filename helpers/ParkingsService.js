@@ -4,8 +4,10 @@ const uuidV4 = require('uuid/v4');
 const isNull = require('lodash/isNull');
 const distance = require('@turf/distance');
 const isString = require('lodash/isString');
+const isNumber = require('lodash/isNumber');
 
 const parkingsList = require('../models/parkings.json');
+let freeParkingsIds = require('../models/free-parkings.json');
 
 
 function isValidCoordinate(coord, index) {
@@ -28,11 +30,11 @@ class ParkingsService {
     this.parkingSchema = {
       id: isString,
       geometry: (prop) => Array.isArray(prop) && prop.every(isValidPoint),
-      length: (prop) => typeof prop === 'number',
-      width: (prop) => typeof prop === 'number',
-      height: (prop) => typeof prop === 'number',
+      length: isNumber,
+      width: isNumber,
+      height: isNumber,
       costPerHour: (prop) => typeof prop === 'number' || isNull(prop),
-      maxStayDuration: (prop) => typeof prop === 'number',
+      maxStayDuration: isNumber,
       restrictions: (prop) => Array.isArray(prop) && prop.every(isString),
       features: (prop) => Array.isArray(prop) && prop.every(isString),
     };
@@ -41,6 +43,20 @@ class ParkingsService {
   saveParkingsInDB() {
     const parkingsJSON = JSON.stringify(this.parkingsList, null, 2);
     fs.writeFile(path.join(__dirname, '../models/parkings.json'), parkingsJSON, 'utf8', console.log);
+  }
+
+  saveParkingAvailabilityInDB(parkingId, isFree) {
+    debugger;
+    const freeParkingsIdsSet = new Set(freeParkingsIds);
+    if (isFree) {
+      freeParkingsIdsSet.add(parkingId)
+    } else {
+      freeParkingsIdsSet.delete(parkingId);
+    }
+    const newParkingIds = [...freeParkingsIdsSet];
+    const newParkingIdsJSON = JSON.stringify(newParkingIds, null, 2);
+    freeParkingsIds = newParkingIds;
+    fs.writeFile(path.join(__dirname, '../models/free-parkings.json'), newParkingIdsJSON, 'utf8', console.log);
   }
 
   getPreparedParking(rawParkingParameters) {
@@ -59,7 +75,7 @@ class ParkingsService {
     }
 
     const validator = this.parkingSchema[parkingParameterKey];
-    const isInvalidType = !validator(parkingParameterValue);
+    const isInvalidType = !validator || !validator(parkingParameterValue);
     if (isInvalidType) {
       return null;
     }
@@ -85,7 +101,8 @@ class ParkingsService {
       };
       this.parkingsList.push(preparedParking);
       this.saveParkingsInDB();
-      return preparedParking;
+      this.saveParkingAvailabilityInDB(preparedParking.id, rawParking.isFree);
+      return this.addAvailablityInfoToParking(preparedParking);
     } else {
       return null;
     }
@@ -102,6 +119,7 @@ class ParkingsService {
         ...updatedParkingParameters,
       };
       this.saveParkingsInDB();
+      this.saveParkingAvailabilityInDB(parkingId, newParameters.isFree);
       return true;
     }
     return false;
@@ -137,7 +155,23 @@ class ParkingsService {
   }
 
   getParkingsInArea(lat, lon, radius) {
-    return this.parkingsList.filter((p) => this.getDistance(...p.geometry[0], lat, lon) <= radius);
+    return this.parkingsList
+      .filter((p) => {
+        const doesParkingFitByDistance = this.getDistance(...p.geometry[0], lat, lon) <= radius;
+        return doesParkingFitByDistance;
+      })
+      .map(this.addAvailablityInfoToParking);
+  }
+
+  static getParkingAvailability(parking) {
+    return freeParkingsIds.includes(parking.id);
+  }
+
+  addAvailablityInfoToParking(p) {
+    return {
+      ...p,
+      isFree: ParkingsService.getParkingAvailability(p),
+    };
   }
 
   getAllParkings() {
